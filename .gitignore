@@ -1,0 +1,12 @@
+*.py[cod]
+assets/external/
+.states
+__pycache__/
+*.db
+.web
+__pycache__
+.pytest_cache
+assets
+myenv
+rxconfig.py
+requirements.txt
