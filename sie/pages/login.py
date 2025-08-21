@@ -1,5 +1,5 @@
 import reflex as rx
-from ..services.auth import verificar_usuario
+from ..services.auth_service import verificar_usuario
 
 class LoginState(rx.State):
     username: str = ""

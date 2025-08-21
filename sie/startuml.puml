@@ -1,0 +1,88 @@
+@startuml startuml
+title Proceso de Estadística Básica (Semestral)
+
+start
+
+:Dirección del DII (A1);
+-> Dirección del DII (A1): Inicia proceso semestral
+:División del DII (B1);
+-> B1: Solicita a C1 preparar solicitud
+:Departamento del DII (C1);
+-> C1: Prepara solicitud a DP
+-> A1: Envía solicitud para validación
+
+if (¿A1 valida?) then (Sí)
+  -> A1: Envía solicitud a DP
+else
+  stop
+endif
+
+:Enlace de DP (B3);
+-> B3: Recibe solicitud
+
+:C1;
+-> C1: Asigna formatos personalizados a cada DP
+
+if (¿Capturista C3 ya tiene acceso?) then (No)
+  -> B3: Crea usuario para C3
+endif
+
+:Capturista de DP (C3);
+-> C3: Llena formatos en SI
+
+group Seguimiento manual
+  :A1, B1, C1, D1;
+  -> Todos: Dan seguimiento vía llamadas
+end group
+
+group Validaciones
+
+  :Enlace B3;
+  -> B3: Valida información
+
+  if (¿Validación B3 OK?) then (Sí)
+    :Titular A3;
+    -> A3: Valida información
+
+    if (¿Validación A3 OK?) then (Sí)
+      :Analista D1;
+      -> D1: Valida y analiza datos
+
+      if (¿Validación D1 OK?) then (Sí)
+        :Departamento C1;
+        -> C1: Valida información
+      else
+        -> SI: Habilita edición
+        -> D1: Llama a C3
+        -> C3: Corrige información
+        back to C3: Vuelve a capturar
+      endif
+
+    else
+      -> SI: Habilita edición
+      -> A3: Llama a C3
+      -> C3: Corrige información
+      back to C3: Vuelve a capturar
+    endif
+
+  else
+    -> SI: Habilita edición
+    -> B3: Llama a C3
+    -> C3: Corrige información
+    back to C3: Vuelve a capturar
+  endif
+
+end group
+
+:Analista D1;
+-> D1: Genera informes
+
+:A1, B1;
+-> A1, B1: Visualizan informes
+
+:A1;
+-> A1: Da por concluido el proceso
+-> A1: Notifica a DP
+
+stop
+@enduml
