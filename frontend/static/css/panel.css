@@ -1,0 +1,65 @@
+.panel-container {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    min-width: 340px;
+    animation: fadeIn 1s;
+    margin: 3rem auto;
+    max-width: 500px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+h1 {
+    text-align: center;
+    color: #43cea2;
+    margin-bottom: 1.5rem;
+}
+h2 {
+    text-align: center;
+    color: #f7971e;
+    margin-bottom: 1rem;
+}
+h3 {
+    color: #00897b;
+    margin-bottom: 1rem;
+}
+.usuarios-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+.usuarios-list li {
+    background: #e0f7fa;
+    color: #00897b;
+    border-left: 5px solid #43cea2;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    animation: slideIn 0.5s;
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.logout-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: background 0.3s;
+}
+.logout-btn:hover {
+    background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+}

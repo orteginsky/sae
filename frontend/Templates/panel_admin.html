@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel Administrador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+</head>
+<body>
+    <div class="panel-container">
+        <h1>Panel de Administrador</h1>
+        <h2>Unidad Académica: {{ unidad.nombre }} ({{ unidad.sigla }})</h2>
+        <h3>Usuarios registrados en esta unidad:</h3>
+        <ul class="usuarios-list">
+            {% for usuario in usuarios %}
+                <li>
+                    {{ usuario.Usuario }} ({{ usuario.rol.Nombre }})
+                    <a href="{{ url_for('auth.editar_usuario', id_usuario=usuario.Id_Usuario) }}" class="edit-btn">Editar</a>
+                    <form action="{{ url_for('auth.eliminar_usuario_route', id_usuario=usuario.Id_Usuario) }}" method="post" style="display:inline;">
+                        <button type="submit" class="delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">Eliminar</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    <a href="{{ url_for('auth.logout') }}" class="logout-btn">Cerrar sesión</a>
+    </div>
+</body>
+</html>

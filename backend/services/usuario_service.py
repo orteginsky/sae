@@ -1,0 +1,46 @@
+from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email
+from backend.database.models.Usuario import Usuario
+#from backend.utils.security import hash_password
+from backend.schemas.usuario import UsuarioCreate
+
+from sqlalchemy.orm import Session
+from typing import Optional
+
+class UserAlreadyExistsError(Exception):
+    """Exception raised when a user already exists."""
+    pass
+
+#Funciones read
+def user_already_exists(db: Session, username: str, email: str) -> bool:
+    """Check if user already exists"""
+    return get_user_by_username(db, username) is not None \
+        or get_user_by_email(db, email) is not None
+
+#funciones create
+
+def register_usuario(db: Session, user_dict: UsuarioCreate) -> Usuario:
+    """
+    Register a new user.
+    
+    Args:
+        db: Session
+        user_data: User data to register
+        
+    Returns:
+        The created user
+        
+    Raises:
+        UserAlreadyExistsError: If username or email already exists
+    """
+    try:
+        if user_already_exists(db, user_dict.Usuario, user_dict.Email):
+            raise ValueError("El usuario o el email ya están registrados")
+
+        user = create_usuario(db, user_dict)
+        return user
+    except Exception as e:
+        print(f"error en usuario_services:{e}")
+        raise
+    finally:
+        db.close()
+

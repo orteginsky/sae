@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cat. Alta de Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alta_usuario.css') }}">
+</head>
+<body>
+    <div class="alta-container">
+        <h1>Cat. Alta de Usuario</h1>
+        <div class="messages">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        </div>
+            <form method="POST">
+                <label>Unidad Académica:
+                    <input list="unidades" name="unidad" placeholder="Escribe nombre o sigla" required autocomplete="off">
+                    <datalist id="unidades">
+                        {% for unidad in unidades %}
+                        <!--<option value="{{ unidad.sigla }}">{{ unidad.nombre }} ({{ unidad.sigla }})</option>-->
+                        <option value="{{ unidad.nombre }}">({{ unidad.sigla }})</option>
+                        {% endfor %}
+                    </datalist>
+                </label>
+                <label>Rol:
+                    <input list="roles" name="rol" placeholder="Escribe o selecciona un rol" required autocomplete="off">
+                    <datalist id="roles">
+                        {% for rol in roles %}
+                            <option value="{{ rol }}">{{ rol }}</option>
+                        {% endfor %}
+                    </datalist>
+                </label>
+            <label>Usuario:
+                <input type="text" name="usuario" placeholder="Nombre de usuario" required>
+            </label>
+            <label>Contraseña:
+                <input type="password" name="contrasena" placeholder="Contraseña" required>
+            </label>
+            <label>Email:
+                <input type="email" name="email" placeholder="ejemplo@dominio.com" required>
+            </label>
+            <input type="submit" value="Registrar Usuario">
+        </form>
+    <form action="{{ url_for('auth.login') }}" method="get" style="margin-top:1rem;">
+            <button type="submit" style="background:#43cea2;color:#fff;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">Regresar al Login</button>
+        </form>
+        {% if usuarios and mensaje_usuario and 'Administrador' in mensaje_usuario %}
+            <div style="margin-top:2rem;">
+                <h3>Usuarios dados de alta:</h3>
+                {% for usuario in usuarios %}
+                    <form method="POST" action="{{ url_for('registro.eliminar_usuario', id_usuario=usuario.id) }}" style="margin-bottom:0.5rem;">
+                        <span>{{ usuario.nombre }} ({{ usuario.rol }})</span>
+                        <button type="submit" style="background:#e74c3c;color:#fff;border:none;padding:0.3rem 0.7rem;border-radius:5px;cursor:pointer; margin-left:1rem;">Eliminar</button>
+                    </form>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

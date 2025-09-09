@@ -11,3 +11,5 @@ myenv
 rxconfig.py
 requirements.txt
 menv
+.venv
+venv
