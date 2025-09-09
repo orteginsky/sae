@@ -1,4 +1,3 @@
-*.py[cod]
 assets/external/
 .states
 __pycache__/
@@ -8,8 +7,6 @@ __pycache__
 .pytest_cache
 assets
 myenv
-rxconfig.py
-requirements.txt
 menv
 .venv
 venv
