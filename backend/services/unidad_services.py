@@ -10,4 +10,9 @@ def unidad_already_exists(db: Session):
 
 def get_all_units(db: Session) -> list[dict]:
     roles = read_all_unidades(db)
+<<<<<<< HEAD
     return [{"id": r[0], "nombre": r[1]} for r in roles]
+=======
+    return [r[1] for r in roles]
+    #return [{"id": r[0], "nombre": r[1]} for r in roles]
+>>>>>>> origin/master

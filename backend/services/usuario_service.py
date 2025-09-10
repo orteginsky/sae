@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email
+=======
+from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email, read_password_by_user
+from backend.crud.Usuario import read_password_by_email
+>>>>>>> origin/master
 from backend.database.models.Usuario import Usuario
 #from backend.utils.security import hash_password
 from backend.schemas.Usuario import UsuarioCreate
@@ -16,6 +21,30 @@ def user_already_exists(db: Session, username: str, email: str) -> bool:
     return get_user_by_username(db, username) is not None \
         or get_user_by_email(db, email) is not None
 
+<<<<<<< HEAD
+=======
+def validacion_usuario(db: Session, username_email: str, password:str) -> bool:
+    """Si el usuario ya exite hay que validar la contraseña"""
+    if get_user_by_email(db, username_email) is not None:
+        stored_password = read_password_by_email(db, username_email)
+        if stored_password == password:  # Comparación directa (no segura)
+            return True
+        else:
+            return False
+        
+    elif get_user_by_username(db, username_email) is not None:
+        stored_password = read_password_by_user(db, username_email)
+        if stored_password == password:  # Comparación directa (no segura)
+            return True
+        else:
+            return False
+        
+    else:
+        return False
+
+            
+
+>>>>>>> origin/master
 #funciones create
 
 def register_usuario(db: Session, user_dict: UsuarioCreate) -> Usuario:
@@ -63,6 +92,10 @@ from typing import Dict
         if not user:
             return False
 
+<<<<<<< HEAD
+=======
+            # Verificar la contraseña usando bcrypt (encriptado)
+>>>>>>> origin/master
         if bcrypt.checkpw(user_dict["password"].encode(), user.password.encode()):
             return True
         return False

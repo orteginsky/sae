@@ -25,4 +25,19 @@ def get_user_by_username(db: Session, username: str) -> Optional[Usuario]:
 
 def get_user_by_email(db: Session, email: str) -> Optional[Usuario]:
     stmt = select(Usuario).where(Usuario.Email == email)
+<<<<<<< HEAD
     return db.execute(stmt).scalars().first()
+=======
+    #stmt = select(Usuario.Usuario)
+    return db.execute(stmt).scalars().first()
+
+def read_password_by_user(db: Session, username: str) -> Optional[str]:
+    stmt = select(Usuario.Contrasena).where(Usuario.Usuario == username)
+    result = db.execute(stmt).scalar_one_or_none()
+    return result
+
+def read_password_by_email(db: Session, email: str) -> Optional[str]:
+    stmt = select(Usuario.Contrasena).where(Usuario.Email == email)
+    result = db.execute(stmt).scalar_one_or_none()
+    return result
+>>>>>>> origin/master

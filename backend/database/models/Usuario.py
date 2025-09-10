@@ -10,10 +10,21 @@ class Usuario(Base):
     Id_Unidad_Academica: Mapped[int] = mapped_column(Integer) #mapped_column(ForeignKey("Cat_Unidad_Academica.Id_Unidad_Academica"))
     Id_Rol: Mapped[int] = mapped_column(Integer)#mapped_column(ForeignKey("Cat_Roles.Id_Rol"))
     Usuario: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+<<<<<<< HEAD
     Contraseña: Mapped[str] = mapped_column(String(50), nullable=False)
+=======
+    #Hay que encriptar la contraseña
+    Contraseña: Mapped[str] = mapped_column(String(2000), nullable=False)
+>>>>>>> origin/master
     Email: Mapped[str] = mapped_column(String(255), unique=True)
     Fecha_Inicio: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     Fecha_Modificacion: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     Fecha_Final: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     Id_Estatus: Mapped[int] = mapped_column(Integer) #mapped_column(ForeignKey("Cat_Estatus.Id_Estatus"))
+<<<<<<< HEAD
+=======
+    Nombre: Mapped[str] = mapped_column(String(50), nullable=True)
+    Paterno: Mapped[str] = mapped_column(String(50), nullable=True)
+    Materno: Mapped[str] = mapped_column(String(50), nullable=True)
+>>>>>>> origin/master
     
