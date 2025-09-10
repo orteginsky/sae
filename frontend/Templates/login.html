@@ -1,44 +1,28 @@
+<!-- templates/login.html -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Ingresa</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login SAE</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="login-container">
-        <h1>SIE</h1>
-        <div class="messages">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-        </div>
-        <form method="POST">
-            <label>Usuario o Correo:&emsp;
-                <input type="text" name="username" placeholder="Ingresa tu usuario o correo" required>
-            </label>
-            <label>Contraseña:&emsp;
-                <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
-            </label>
-            <input type="submit" value="Iniciar Sesión">
+    <div class="container">
+        <h2>Iniciar Sesión</h2>
+        <form method="post" action="/login">
+            <input type="text" name="usuario" placeholder="Usuario" required style="padding:8px; width:80%; margin-bottom:16px;">
             <br>
+            <input type="password" name="contrasena" placeholder="Contraseña" required style="padding:8px; width:80%; margin-bottom:24px;">
+            <br>
+            <button type="submit">Entrar</button>
         </form>
-        <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
-            <br>
-            <a href="{{ url_for('registro.recuperar_usuario') }}" class="login-link" style="color:#43cea2; font-weight:500; text-decoration:none; font-size:0.95em;">¿Olvidaste tu usuario?</a>
-            <a href="{{ url_for('registro.recuperar_contrasena') }}" class="login-link" style="color:#43cea2; font-weight:500; text-decoration:none; font-size:0.95em;">¿Olvidaste tu contraseña?</a>
-        </div>
-            <div style="text-align:center; margin-top:1rem;">
-                <span style="color:#f7971e; font-weight:500;">¿No tienes Usuario?</span>
-                <a href="{{ url_for('registro.alta_usuario') }}" class="login-link">Regístrate aquí</a>
+        {% if mensaje is defined %}
+            <div class="status {{ 'ok' if exito else 'fail' }}">
+                {{ mensaje }}
             </div>
-        <br>
+        {% endif %}
+        <a href="/portada" style="display:block;margin-top:30px;">&larr; Volver a portada</a>
     </div>
 </body>
 </html>

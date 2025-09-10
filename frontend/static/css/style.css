@@ -1,0 +1,76 @@
+/* static/css/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Colores institucionales IPN */
+:root {
+    --ipn-morado: #6e0343;
+    --ipn-oro: #ffffff;
+    --ipn-gris: #e5e5e5;
+    --ipn-blanco: #fff;
+}
+
+.container {
+    max-width: 400px;
+    margin: 60px auto;
+    background: var(--ipn-blanco);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(110,3,67,0.08);
+    text-align: center;
+    border: 2px solid var(--ipn-morado);
+}
+
+h2 {
+    margin-bottom: 24px;
+    color: var(--ipn-morado);
+}
+
+button, .sae-btn {
+    background: var(--ipn-morado);
+    color: var(--ipn-oro);
+    border: none;
+    padding: 16px 48px;
+    border-radius: 8px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin: 0 auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(110,3,67,0.10);
+    letter-spacing: 2px;
+}
+button:hover, .sae-btn:hover {
+    background: var(--ipn-oro);
+    color: var(--ipn-morado);
+}
+
+.status {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.status.ok {
+    background: #e6f4ea;
+    color: #155724;
+}
+.status.fail {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Portada */
+.portada-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--ipn-morado) 60%, var(--ipn-oro) 100%);
+}

@@ -1,10 +1,12 @@
 from backend.database.models.CatRama import CatRama
+from backend.schemas.Rama import RamaCreate, RamaResponse
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-def create_rama(db: Session, dict_rama:dict) -> CatRama:
-    new_Rama = CatRama(**dict_rama)
+def create_rama(db: Session, dict_rama:RamaCreate) -> CatRama:
+    new_Rama = CatRama(**dict_rama.model_dump())
     db.add(new_Rama)
     try:
         db.commit()

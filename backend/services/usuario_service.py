@@ -1,7 +1,7 @@
 from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email
 from backend.database.models.Usuario import Usuario
 #from backend.utils.security import hash_password
-from backend.schemas.usuario import UsuarioCreate
+from backend.schemas.Usuario import UsuarioCreate
 
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -44,3 +44,34 @@ def register_usuario(db: Session, user_dict: UsuarioCreate) -> Usuario:
     finally:
         db.close()
 
+
+from backend.database.connection import get_db
+from backend.database.models.Usuario import Usuario
+from backend.crud.Usuario import get_user_by_username
+
+import bcrypt
+from typing import Dict
+
+
+"""Verifica que el usuario exista y que la contraseña sea correcta."""
+
+"""def verify_user(user_dict: Dict[str, str]) -> bool:
+    
+    db = next(get_db())
+    try:
+        user = get_user_by_username(db, user_dict["username"])
+        if not user:
+            return False
+
+        if bcrypt.checkpw(user_dict["password"].encode(), user.password.encode()):
+            return True
+        return False
+
+    except KeyError as ke:
+        print(f"❌ Faltan datos requeridos: {ke}")
+    except Exception as e:
+        print(f"❌ Error en verify_user: {e}")
+    finally:
+        db.close()
+    return False
+"""

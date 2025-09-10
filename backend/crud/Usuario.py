@@ -1,6 +1,7 @@
 from backend.database.models.Usuario import Usuario
-from backend.schemas.usuario import UsuarioCreate
+from backend.schemas.Usuario import UsuarioCreate, UsuarioResponse
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
@@ -19,7 +20,9 @@ def create_usuario(db: Session, user_data: UsuarioCreate) -> Usuario:
     return new_user
 
 def get_user_by_username(db: Session, username: str) -> Optional[Usuario]:
-    return db.query(Usuario).filter(Usuario.Usuario == username).first()
+    stmt = select(Usuario).where(Usuario.Usuario == username)
+    return db.execute(stmt).scalars().first()
 
 def get_user_by_email(db: Session, email: str) -> Optional[Usuario]:
-    return db.query(Usuario).filter(Usuario.Email == email).first()
+    stmt = select(Usuario).where(Usuario.Email == email)
+    return db.execute(stmt).scalars().first()

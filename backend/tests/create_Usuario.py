@@ -1,6 +1,6 @@
 from backend.crud.Usuario import create_usuario
 from backend.database.connection import get_db
-from backend.schemas.usuario import UsuarioCreate
+from backend.schemas.Usuario import UsuarioCreate
 
 nuevo_usuario = UsuarioCreate(
     Id_Unidad_Academica=1,

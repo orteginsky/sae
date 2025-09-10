@@ -1,0 +1,26 @@
+<!-- templates/validar_usuario.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validar Usuario</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Validar Usuario</h2>
+        <form method="post" action="/validar-usuario">
+            <input type="text" name="usuario" placeholder="Usuario" required style="padding:8px; width:70%; margin-bottom:10px;">
+            <br>
+            <button type="submit">Validar</button>
+        </form>
+        {% if validacion is defined %}
+            <div class="status {{ 'ok' if validacion else 'fail' }}">
+                {{ mensaje_validacion }}
+            </div>
+        {% endif %}
+        <a href="/" style="display:block;margin-top:30px;">&larr; Volver a conexión</a>
+    </div>
+</body>
+</html>
