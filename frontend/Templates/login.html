@@ -1,0 +1,28 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login SAE</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Iniciar Sesión</h2>
+        <form method="post" action="/login">
+            <input type="text" name="usuario" placeholder="Usuario" required style="padding:8px; width:80%; margin-bottom:16px;">
+            <br>
+            <input type="password" name="contrasena" placeholder="Contraseña" required style="padding:8px; width:80%; margin-bottom:24px;">
+            <br>
+            <button type="submit" onclick="window.location.href='/registro'">Entrar</button>
+        </form>
+        {% if mensaje is defined %}
+            <div class="status {{ 'ok' if exito else 'fail' }}">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+        <a href="/portada" style="display:block;margin-top:30px;">&larr; Volver a portada</a>
+    </div>
+</body>
+</html>

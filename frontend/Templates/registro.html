@@ -1,0 +1,62 @@
+<!-- templates/registro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+    function sugerirUsuario() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const apPat = document.getElementById('ap_pat').value.trim();
+        const apMat = document.getElementById('ap_mat').value.trim();
+        if(nombre && apPat) {
+            let usuario = nombre.charAt(0).toLowerCase() + apPat.toLowerCase();
+            if(apMat) usuario += apMat.charAt(0).toLowerCase();
+            document.getElementById('usuario').value = usuario;
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Nuevo Usuario</h2>
+        <form method="post" action="/registro">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required oninput="sugerirUsuario()" style="padding:8px; width:80%; margin-bottom:10px;">
+            <br>
+            <input type="text" id="ap_pat" name="apellido_paterno" placeholder="Apellido Paterno" required oninput="sugerirUsuario()" style="padding:8px; width:80%; margin-bottom:10px;">
+            <br>
+            <input type="text" id="ap_mat" name="apellido_materno" placeholder="Apellido Materno" required oninput="sugerirUsuario()" style="padding:8px; width:80%; margin-bottom:10px;">
+            <br>
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly style="padding:8px; width:80%; margin-bottom:10px; background:#eee;">
+            <br>
+            <input type="email" name="email" placeholder="Correo electrónico" required style="padding:8px; width:80%; margin-bottom:10px;">
+            <br>
+            <input type="password" name="contrasena" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required style="padding:8px; width:80%; margin-bottom:10px;">
+            <br>
+            <select name="unidad_academica" required style="padding:8px; width:80%; margin-bottom:10px;">
+                <option value="">Selecciona Unidad Académica</option>
+                {% for ua in unidades_academicas %}
+                <option value="{{ ua }}">{{ ua }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <select name="rol" required style="padding:8px; width:80%; margin-bottom:24px;">
+                <option value="">Selecciona Rol</option>
+                {% for rol in roles %}
+                <option value="{{ rol.nombre }}">{{ rol.nombre }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit">Registrar</button>
+        </form>
+        {% if mensaje is defined %}
+            <div class="status {{ 'ok' if exito else 'fail' }}">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+        <a href="/portada" style="display:block;margin-top:30px;">&larr; Volver a portada</a>
+    </div>
+</body>
+</html>
