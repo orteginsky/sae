@@ -8,11 +8,7 @@ from sqlalchemy.orm import Session
 def unidad_already_exists(db: Session):
     return 0
 
-def get_all_units(db: Session) -> list[dict]:
+def get_all_units(db: Session) -> list[str]:
     roles = read_all_unidades(db)
-<<<<<<< HEAD
-    return [{"id": r[0], "nombre": r[1]} for r in roles]
-=======
-    return [r[1] for r in roles]
     #return [{"id": r[0], "nombre": r[1]} for r in roles]
->>>>>>> origin/master
+    return [r[1] for r in roles]

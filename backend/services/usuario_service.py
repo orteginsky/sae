@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email
-=======
 from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email, read_password_by_user
 from backend.crud.Usuario import read_password_by_email
->>>>>>> origin/master
 from backend.database.models.Usuario import Usuario
 #from backend.utils.security import hash_password
 from backend.schemas.Usuario import UsuarioCreate
@@ -21,8 +17,6 @@ def user_already_exists(db: Session, username: str, email: str) -> bool:
     return get_user_by_username(db, username) is not None \
         or get_user_by_email(db, email) is not None
 
-<<<<<<< HEAD
-=======
 def validacion_usuario(db: Session, username_email: str, password:str) -> bool:
     """Si el usuario ya exite hay que validar la contraseña"""
     if get_user_by_email(db, username_email) is not None:
@@ -44,7 +38,6 @@ def validacion_usuario(db: Session, username_email: str, password:str) -> bool:
 
             
 
->>>>>>> origin/master
 #funciones create
 
 def register_usuario(db: Session, user_dict: UsuarioCreate) -> Usuario:
