@@ -1,17 +1,12 @@
-# routers/validaciones.py
-"""
-Rutas relacionadas con validaciones de usuario y login.
-"""
+# routers/login.py
+from backend.database.connection import get_db
 from backend.services.usuario_service import validacion_usuario
+from backend.core.templates import templates, static
 
-from sqlalchemy.orm import Session
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import select
-from backend.database.connection import get_db
-#from frontend.database import engine
-from backend.core.templates import templates, static
+
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 

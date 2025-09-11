@@ -1,9 +1,11 @@
 from backend.database.connection import get_db
 from backend.services.roles_service import get_all_roles
 from backend.services.unidad_services import get_all_units
-from backend.core.templates import templates, static
+from backend.services.usuario_service import register_usuario
+from backend.schemas.Usuario import UsuarioCreate, UsuarioResponse
+from backend.core.templates import templates
 
-from fastapi import APIRouter, Request, Form, Depends, HTTPException
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 
 from sqlalchemy.orm import Session
@@ -24,3 +26,9 @@ async def registro_view(request: Request, db: Session = Depends(get_db)):
         {"request": request, "unidades_academicas": unidades_academicas, "roles": roles},
     )
     
+@router.post("/", response_model=UsuarioResponse)
+async def register_user_endpoint(user: UsuarioCreate, db: Session = Depends(get_db)):
+    try:
+        return register_usuario(db, user)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))

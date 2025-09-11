@@ -28,7 +28,7 @@ def read_unit_by_initials(db: Session, sigla: str) -> Optional[CatUnidadAcademic
     except Exception as e:
         raise ValueError(f"error en read_unit_by_initials crud: {e}")
 
-def read_all_unidades(db: Session) -> Sequence[Tuple[int, str]]:
-    stmt = select(CatUnidadAcademica.Id_Unidad_Academica, CatUnidadAcademica.Sigla).order_by(CatUnidadAcademica.Sigla)
-    result = db.execute(stmt).tuples().all()
+def read_all_unidades(db: Session) -> Sequence[CatUnidadAcademica]:
+    stmt = select(CatUnidadAcademica).order_by(CatUnidadAcademica.Sigla)
+    result = db.execute(stmt).scalars().all()
     return result

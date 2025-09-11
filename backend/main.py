@@ -1,27 +1,18 @@
-#backend.sie.py
-from backend.api import user
+#backend.main.py
 from backend.api import registro
-from backend.api import validaciones
-from backend.core.templates import templates, static
+from backend.api import login
+from backend.api import index
+from backend.core.templates import static
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-
-import os
 
 app = FastAPI()
 app.mount("/static", static)
-app.include_router(user.router, prefix="/users")
 app.include_router(registro.router, prefix="/registro")
-app.include_router(validaciones.router , prefix="/login")
+app.include_router(login.router , prefix="/login")
+app.include_router(index.router , prefix="/index")
 
-# Redirigir raíz a portada
 @app.get("/", response_class=HTMLResponse)
 async def root():
-    return RedirectResponse(url="/portada")
-
-@app.get("/portada", response_class=HTMLResponse)
-async def portada(request: Request):
-    return templates.TemplateResponse("portada.html", {"request": request})
+    return RedirectResponse(url="/index")

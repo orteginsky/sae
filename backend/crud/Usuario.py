@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from typing import Optional
 
+############################__________________FUNCIONES CREATE____________________________############################
 def create_usuario(db: Session, user_data: UsuarioCreate) -> Usuario:
     new_user = Usuario(**user_data.model_dump())
     db.add(new_user)
@@ -19,11 +20,12 @@ def create_usuario(db: Session, user_data: UsuarioCreate) -> Usuario:
         raise
     return new_user
 
-def get_user_by_username(db: Session, username: str) -> Optional[Usuario]:
+############################__________________FUNCIONES READ____________________________############################
+def read_user_by_username(db: Session, username: str) -> Optional[Usuario]:
     stmt = select(Usuario).where(Usuario.Usuario == username)
     return db.execute(stmt).scalars().first()
 
-def get_user_by_email(db: Session, email: str) -> Optional[Usuario]:
+def read_user_by_email(db: Session, email: str) -> Optional[Usuario]:
     stmt = select(Usuario).where(Usuario.Email == email)
     return db.execute(stmt).scalars().first()
 

@@ -1,11 +1,15 @@
-from backend.crud.Usuario import create_usuario, get_user_by_username, get_user_by_email, read_password_by_user
+
+from backend.crud.Usuario import create_usuario, read_user_by_username, read_user_by_email, read_password_by_user
 from backend.crud.Usuario import read_password_by_email
 from backend.database.models.Usuario import Usuario
-#from backend.utils.security import hash_password
-from backend.schemas.Usuario import UsuarioCreate
+from backend.utils.security import hash_password
+from backend.schemas.Usuario import UsuarioCreate, UsuarioResponse
+
 
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, Dict
+
+import bcrypt
 
 class UserAlreadyExistsError(Exception):
     """Exception raised when a user already exists."""
@@ -14,90 +18,38 @@ class UserAlreadyExistsError(Exception):
 #Funciones read
 def user_already_exists(db: Session, username: str, email: str) -> bool:
     """Check if user already exists"""
-    return get_user_by_username(db, username) is not None \
-        or get_user_by_email(db, email) is not None
+    return read_user_by_username(db, username) is not None \
+        or read_user_by_email(db, email) is not None
 
-def validacion_usuario(db: Session, username_email: str, password:str) -> bool:
-    """Si el usuario ya exite hay que validar la contraseña"""
-    if get_user_by_email(db, username_email) is not None:
-        stored_password = read_password_by_email(db, username_email)
-        if stored_password == password:  # Comparación directa (no segura)
+def validacion_usuario(db: Session, username_email: str, password: str) -> bool:
+    try:
+        user = read_user_by_email(db, username_email)
+        if user is None:
+            user = read_user_by_username(db, username_email)
+        if user is None:
+            return False  
+        stored_password: Optional[str] = user.Contraseña
+        if stored_password is None:
+            return False
+        if bcrypt.checkpw(password.encode("utf-8"), stored_password.encode("utf-8")):
             return True
         else:
             return False
-        
-    elif get_user_by_username(db, username_email) is not None:
-        stored_password = read_password_by_user(db, username_email)
-        if stored_password == password:  # Comparación directa (no segura)
-            return True
-        else:
-            return False
-        
-    else:
+    except Exception as e:
+        print(f"Error en validacion_usuario: {e}")
         return False
 
             
-
-#funciones create
-
-def register_usuario(db: Session, user_dict: UsuarioCreate) -> Usuario:
-    """
-    Register a new user.
-    
-    Args:
-        db: Session
-        user_data: User data to register
-        
-    Returns:
-        The created user
-        
-    Raises:
-        UserAlreadyExistsError: If username or email already exists
-    """
+def register_usuario(db: Session, user_dict: UsuarioCreate) -> UsuarioResponse:
     try:
         if user_already_exists(db, user_dict.Usuario, user_dict.Email):
             raise ValueError("El usuario o el email ya están registrados")
-
+        user_dict.Contraseña = hash_password(user_dict.Contraseña)
         user = create_usuario(db, user_dict)
-        return user
+        return UsuarioResponse.model_validate(user)
+
     except Exception as e:
-        print(f"error en usuario_services:{e}")
+        print(f"Error en usuario_services: {e}")
         raise
     finally:
         db.close()
-
-
-from backend.database.connection import get_db
-from backend.database.models.Usuario import Usuario
-from backend.crud.Usuario import get_user_by_username
-
-import bcrypt
-from typing import Dict
-
-
-"""Verifica que el usuario exista y que la contraseña sea correcta."""
-
-"""def verify_user(user_dict: Dict[str, str]) -> bool:
-    
-    db = next(get_db())
-    try:
-        user = get_user_by_username(db, user_dict["username"])
-        if not user:
-            return False
-
-<<<<<<< HEAD
-=======
-            # Verificar la contraseña usando bcrypt (encriptado)
->>>>>>> origin/master
-        if bcrypt.checkpw(user_dict["password"].encode(), user.password.encode()):
-            return True
-        return False
-
-    except KeyError as ke:
-        print(f"❌ Faltan datos requeridos: {ke}")
-    except Exception as e:
-        print(f"❌ Error en verify_user: {e}")
-    finally:
-        db.close()
-    return False
-"""

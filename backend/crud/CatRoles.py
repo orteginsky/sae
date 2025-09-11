@@ -29,10 +29,9 @@ def read_role_by_name(db: Session, name: str) -> Optional[CatRoles]:
     except Exception as e:
         raise ValueError(f"error en get_role_by_name crud: {e}")
 
-def read_all_roles(db: Session) -> Sequence[Tuple[int, str]]:
-    stmt = select(CatRoles.Id_Rol, CatRoles.Nombre).order_by(CatRoles.Nombre)
-    result = db.execute(stmt).tuples().all()
-    return result
+def read_all_roles(db: Session) -> Sequence[CatRoles]:
+    stmt = select(CatRoles).order_by(CatRoles.Nombre)
+    return db.execute(stmt).scalars().all()
 
 def read_all_names_roles(db: Session) -> Sequence[str]: 
     stmt = select(CatRoles.Nombre)

@@ -1,4 +1,3 @@
-from backend.database.connection import get_db
 from backend.database.models.CatRoles import CatRoles
 from backend.crud.CatRoles import create_rol, read_role_by_name, read_all_names_roles, read_id_by_name, read_all_roles
 from backend.schemas.Roles import RolesCreate, RolesResponse
@@ -19,6 +18,6 @@ def register_role(db: Session,role_dict: RolesCreate) -> CatRoles:
     finally:
         db.close()
 
-def get_all_roles(db: Session) -> list[dict]:
+def get_all_roles(db: Session) -> list[RolesResponse]:
     roles = read_all_roles(db)
-    return [{"id": r[0], "nombre": r[1]} for r in roles]
+    return [RolesResponse.model_validate(r) for r in roles]

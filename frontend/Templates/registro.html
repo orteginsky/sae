@@ -35,17 +35,17 @@
             <br>
             <input type="password" name="contrasena" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required style="padding:8px; width:80%; margin-bottom:10px;">
             <br>
-            <select name="unidad_academica" required style="padding:8px; width:80%; margin-bottom:10px;">
+            <select name="unidad_academica" required style="padding:8px; width:80%; margin-bottom:24px;">
                 <option value="">Selecciona Unidad Académica</option>
                 {% for ua in unidades_academicas %}
-                <option value="{{ ua }}">{{ ua }}</option>
+                <option value="{{ ua.Id_Unidad_Academica }}">{{ ua.Sigla }}</option>
                 {% endfor %}
             </select>
             <br>
             <select name="rol" required style="padding:8px; width:80%; margin-bottom:24px;">
                 <option value="">Selecciona Rol</option>
                 {% for rol in roles %}
-                <option value="{{ rol.nombre }}">{{ rol.nombre }}</option>
+                <option value="{{ rol.Id_Rol }}">{{ rol.Nombre }}</option>
                 {% endfor %}
             </select>
             <br>
@@ -56,7 +56,7 @@
                 {{ mensaje }}
             </div>
         {% endif %}
-        <a href="/portada" style="display:block;margin-top:30px;">&larr; Volver a portada</a>
+        <a href="/index" style="display:block;margin-top:30px;">&larr; Volver al inicio</a>
     </div>
 </body>
 </html>
