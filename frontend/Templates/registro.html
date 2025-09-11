@@ -1,0 +1,63 @@
+<!-- templates/registro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+    function sugerirUsuario() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const apPat = document.getElementById('ap_pat').value.trim();
+        const apMat = document.getElementById('ap_mat').value.trim();
+        if(nombre && apPat) {
+            let usuario = nombre.charAt(0).toLowerCase() + apPat.toLowerCase();
+            if(apMat) usuario += apMat.charAt(0).toLowerCase();
+            document.getElementById('usuario').value = usuario;
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Nuevo Usuario</h2>
+        <form method="post" action="/registro">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required oninput="sugerirUsuario()" class="input-grande">
+            <br>
+            <input type="text" id="ap_pat" name="apellido_paterno" placeholder="Apellido Paterno" required oninput="sugerirUsuario()" class="input-grande">
+            <br>
+            <input type="text" id="ap_mat" name="apellido_materno" placeholder="Apellido Materno" required oninput="sugerirUsuario()" class="input-grande">
+            <br>
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly class="input-grande input-grande-bg">
+            <br>
+            <input type="email" name="email" placeholder="Correo electrónico" required class="input-grande">
+            <br>
+            <input type="password" name="contrasena" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required class="input-grande">
+            <br>
+            <input list="unidades_academicas" name="unidad_academica" required placeholder="Selecciona Unidad Académica" class="input-grande input-grande-mb24">
+            <datalist id="unidades_academicas">
+                {% for ua in unidades_academicas %}
+                <option value="{{ ua.Sigla }}" data-id="{{ ua.Id_Unidad_Academica }}"></option>
+                {% endfor %}
+            </datalist>
+            <br>
+            <input list="roles" name="rol" required placeholder="Selecciona Rol" class="input-grande input-grande-mb24">
+            <datalist id="roles">
+                {% for rol in roles %}
+                <option value="{{ rol.Nombre }}" data-id="{{ rol.Id_Rol }}"></option>
+                {% endfor %}
+            </datalist>
+            <br>
+            <br>
+            <button type="submit">Registrar</button>
+        </form>
+        {% if mensaje is defined %}
+            <div class="status {{ 'ok' if exito else 'fail' }}">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+    <a href="/login" class="volver-inicio">&larr; Volver al inicio</a>
+    </div>
+</body>
+</html>
