@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 
 class UsuarioBase(BaseModel):
     Usuario: str
@@ -22,3 +22,6 @@ class UsuarioResponse(UsuarioBase):
     model_config = {
         "from_attributes": True
     }
+
+class UsuarioLogin(UsuarioBase):
+    Password: str
