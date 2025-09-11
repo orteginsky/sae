@@ -44,7 +44,7 @@ def register_usuario(db: Session, user_dict: UsuarioCreate) -> UsuarioResponse:
     try:
         if user_already_exists(db, user_dict.Usuario, user_dict.Email):
             raise ValueError("El usuario o el email ya están registrados")
-        user_dict.Contraseña = hash_password(user_dict.Contraseña)
+        user_dict.Password = hash_password(user_dict.Password)
         user = create_usuario(db, user_dict)
         return UsuarioResponse.model_validate(user)
 
