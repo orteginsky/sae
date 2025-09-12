@@ -5,59 +5,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <!--Links para descargar la fuente NotoSans-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/static/css/style.css">-->
     <script>
     function sugerirUsuario() {
-        const nombre = document.getElementById('nombre').value.trim();
-        const apPat = document.getElementById('ap_pat').value.trim();
-        const apMat = document.getElementById('ap_mat').value.trim();
-        if(nombre && apPat) {
-            let usuario = nombre.charAt(0).toLowerCase() + apPat.toLowerCase();
-            if(apMat) usuario += apMat.charAt(0).toLowerCase();
-            document.getElementById('usuario').value = usuario;
-        }
+        const correo = document.getElementById('email').value.trim();
+        let usuario = correo.split('@')[0];
+        document.getElementById('usuario').value = usuario;
     }
     </script>
 </head>
 <body>
+    <style>
+        body {
+            font-family: Noto Sans, sans-serif;
+            background: #6e0343;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        .input-form {
+            padding: 8px;
+            width: 80%;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .link-volver {
+            display: block;
+            margin-top: 30px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.ok {
+            background: #e6f4ea;
+            color: #155724;
+        }
+        .status.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button[type="submit"] {
+            background: #6e0343;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background: #4a022e;
+        }
+    </style>
     <div class="container">
         <h2>Registro de Nuevo Usuario</h2>
-        <form method="post" action="/registro">
-            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required oninput="sugerirUsuario()" class="input-grande">
+        <form id="registroForm">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required class="input-form">
             <br>
-            <input type="text" id="ap_pat" name="apellido_paterno" placeholder="Apellido Paterno" required oninput="sugerirUsuario()" class="input-grande">
+            <input type="text" id="ap_pat" name="paterno" placeholder="Apellido Paterno" required class="input-form">
             <br>
-            <input type="text" id="ap_mat" name="apellido_materno" placeholder="Apellido Materno" required oninput="sugerirUsuario()" class="input-grande">
+            <input type="text" id="ap_mat" name="materno" placeholder="Apellido Materno" required class="input-form">
             <br>
-            <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly class="input-grande input-grande-bg">
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" required oninput="sugerirUsuario()" class="input-form">
             <br>
-            <input type="email" name="email" placeholder="Correo electrónico" required class="input-grande">
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly class="input-form input-readonly">
             <br>
-            <input type="password" name="contrasena" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required class="input-grande">
+            <input type="password" id="password" name="password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required class="input-form">
             <br>
-            <input list="unidades_academicas" name="unidad_academica" required placeholder="Selecciona Unidad Académica" class="input-grande input-grande-mb24">
-            <datalist id="unidades_academicas">
+            <select id="id_unidad_academica" name="id_unidad_academica" required class="input-form" title="Selecciona la unidad académica">
                 {% for ua in unidades_academicas %}
-                <option value="{{ ua.Sigla }}" data-id="{{ ua.Id_Unidad_Academica }}"></option>
+                <option value="{{ ua.Id_Unidad_Academica }}">{{ ua.Sigla }}</option>
                 {% endfor %}
-            </datalist>
+            </select>
             <br>
-            <input list="roles" name="rol" required placeholder="Selecciona Rol" class="input-grande input-grande-mb24">
-            <datalist id="roles">
+            <select id="id_rol" name="id_rol" required class="input-form" title="Selecciona el rol">
                 {% for rol in roles %}
-                <option value="{{ rol.Nombre }}" data-id="{{ rol.Id_Rol }}"></option>
+                <option value="{{ rol.Id_Rol }}">{{ rol.Nombre }}</option>
                 {% endfor %}
-            </datalist>
-            <br>
+            </select>
             <br>
             <button type="submit">Registrar</button>
         </form>
-        {% if mensaje is defined %}
-            <div class="status {{ 'ok' if exito else 'fail' }}">
-                {{ mensaje }}
-            </div>
-        {% endif %}
-    <a href="/login" class="volver-inicio">&larr; Volver al inicio</a>
+
+        <!-- Aquí mostraremos mensajes -->
+        <div id="mensaje"></div>
+        <a href="/login" class="link-volver">&larr; Volver al Inicio</a>
     </div>
+
+    <script>
+    document.getElementById("registroForm").addEventListener("submit", async function(e) {
+        e.preventDefault(); // evita recargar la página
+
+        // 1. Tomamos los valores del form
+        const data = {
+            Nombre: document.getElementById("nombre").value,
+            Paterno: document.getElementById("ap_pat").value,
+            Materno: document.getElementById("ap_mat").value,
+            Usuario: document.getElementById("usuario").value,
+            Email: document.getElementById("email").value,
+            Password: document.getElementById("password").value,
+            Id_Unidad_Academica: parseInt(document.getElementById("id_unidad_academica").value),
+            Id_Rol: parseInt(document.getElementById("id_rol").value),
+            Id_Estatus: 1,
+        };
+
+        try {
+            // 2. Mandamos datos en JSON
+            const response = await fetch("/registro", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            // 3. Procesamos la respuesta
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById("mensaje").innerHTML =
+                    `<p style="color: green;">✅ Usuario registrado con ID ${result.Id_Usuario}</p>`;
+            } else {
+                document.getElementById("mensaje").innerHTML =
+                    `<p style="color: red;">❌ Error: ${result.detail}</p>`;
+            }
+        } catch (err) {
+            document.getElementById("mensaje").innerHTML =
+                `<p style="color: red;">⚠️ Error de conexión: ${err.customMessage}</p>`;
+        }
+    });
+    </script>
 </body>
 </html>
