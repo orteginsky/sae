@@ -11,12 +11,12 @@ from typing import Optional, Dict
 import bcrypt
 
 class UserAlreadyExistsError(Exception):
-    """Exception raised when a user already exists."""
+    """Excepción lanzada cuando un usuario ya existe."""
     pass
 
 #Funciones read
 def user_already_exists(db: Session, username: str, email: str) -> bool:
-    """Check if user already exists"""
+    """Verifica si el usuario ya existe por nombre de usuario o email."""
     return read_user_by_username(db, username) is not None \
         or read_user_by_email(db, email) is not None
 
@@ -42,7 +42,7 @@ def validacion_usuario(db: Session, username_email: Optional[str], password: Opt
         return False
 
 def validacion_usuario_2(db: Session, userlogin: Optional[UsuarioLogin]) -> bool:
-
+    """ Validar usuario usando un objeto UsuarioLogin """
     try:
         if userlogin is not None:
             user = read_user_by_email(db, userlogin.Usuario)
@@ -59,10 +59,12 @@ def validacion_usuario_2(db: Session, userlogin: Optional[UsuarioLogin]) -> bool
                 return False
         else:
             return False
-    except Exception as e:
+    except Exception as e:        
         print(f"Error en validacion_usuario: {e}")
         return False
             
+#Funciones create
+# Registrar un nuevo usuario
 def register_usuario(db: Session, user_dict: UsuarioCreate) -> UsuarioResponse:
     try:
         if user_already_exists(db, user_dict.Usuario, user_dict.Email):
@@ -82,12 +84,15 @@ def get_usuarios_by_unidad(db: Session, id_unidad_academica: int):
     from backend.database.models.Usuario import Usuario
     return db.query(Usuario).filter(Usuario.Id_Unidad_Academica == id_unidad_academica).all()
 
+# Obtener un usuario por su ID
 def get_usuario_by_id(db: Session, id_usuario: int):
     from backend.database.models.Usuario import Usuario
     return db.query(Usuario).filter(Usuario.Id_Usuario == id_usuario).first()
 
+# Actualizar un usuario
 def update_usuario(db: Session, id_usuario: int, Nombre: str, Paterno: str, Materno: str, Email: str, Id_Rol: int):
     from backend.database.models.Usuario import Usuario
+    from datetime import datetime, timezone
     usuario = db.query(Usuario).filter(Usuario.Id_Usuario == id_usuario).first()
     if usuario:
         usuario.Nombre = Nombre
@@ -95,10 +100,24 @@ def update_usuario(db: Session, id_usuario: int, Nombre: str, Paterno: str, Mate
         usuario.Materno = Materno
         usuario.Email = Email
         usuario.Id_Rol = Id_Rol
+        usuario.Fecha_Modificacion = datetime.now(timezone.utc)
         db.commit()
         db.refresh(usuario)
     return usuario
 
+# Obtener todos los roles
 def get_all_roles(db: Session):
     from backend.database.models.CatRoles import CatRoles
     return db.query(CatRoles).all()
+
+# Obtener usuarios por unidad académica junto con el nombre del rol
+def get_usuarios_by_unidad_con_rol(db: Session, id_unidad_academica: int):
+    from backend.database.models.Usuario import Usuario
+    from backend.database.models.CatRoles import CatRoles
+    return db.query(Usuario, CatRoles.Nombre.label("NombreRol")).join(CatRoles, Usuario.Id_Rol == CatRoles.Id_Rol).filter(Usuario.Id_Unidad_Academica == id_unidad_academica).all()
+
+# Obtener el nombre de la Unidad Académica por su id
+def get_unidad_academica_nombre(db: Session, id_unidad_academica: int) -> str:
+    from backend.database.models.CatUnidadAcademica import CatUnidadAcademica
+    ua = db.query(CatUnidadAcademica).filter(CatUnidadAcademica.Id_Unidad_Academica == id_unidad_academica).first()
+    return ua.Nombre if ua else "-"

@@ -36,9 +36,12 @@ async def login(
                 user = read_user_by_username(db, usuario_email)
             id_unidad = user.Id_Unidad_Academica if user else 1
             id_rol = user.Id_Rol if user else 2
-            # Redirigir y guardar el rol en una cookie
+            # Redirigir y guardar el rol y nombre de usuario en una cookie
             response = RedirectResponse(url=f"/usuarios/?id_unidad_academica={id_unidad}", status_code=303)
             response.set_cookie(key="id_rol", value=str(id_rol), httponly=True)
+            response.set_cookie(key="nombre_usuario", value=user.Nombre or "", httponly=True)
+            response.set_cookie(key="apellidoP_usuario", value=user.Paterno or "", httponly=True)
+            response.set_cookie(key="apellidoM_usuario", value=user.Materno or "", httponly=True)
             return response
         else:
             mensaje = "Usuario o contraseña incorrectos."

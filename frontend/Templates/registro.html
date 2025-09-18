@@ -74,15 +74,15 @@
     <div class="container">
         <h2>Registro de Nuevo Usuario</h2>
         <form id="registroForm">
-            <input type="text" id="nombre" name="nombre" placeholder="Nombre" required class="input-form">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre(s)" required class="input-form">
             <br>
             <input type="text" id="ap_pat" name="paterno" placeholder="Apellido Paterno" required class="input-form">
             <br>
             <input type="text" id="ap_mat" name="materno" placeholder="Apellido Materno" required class="input-form">
             <br>
-            <input type="email" id="email" name="email" placeholder="Correo electrónico" required oninput="sugerirUsuario()" class="input-form">
+            <input type="email" id="email" name="email" placeholder="Correo Electrónico" required oninput="sugerirUsuario()" class="input-form">
             <br>
-            <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly class="input-form input-readonly">
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario Sugerido" required readonly class="input-form input-readonly">
             <br>
             <input type="password" id="password" name="password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required class="input-form">
             <br>
@@ -103,7 +103,24 @@
 
         <!-- Aquí mostraremos mensajes -->
         <div id="mensaje"></div>
-        <a href="/login" class="link-volver">&larr; Volver al Inicio</a>
+        <form action="/login" method="get">
+            <button type="submit" class="btn-volver">&larr; Volver al Inicio</button>
+        </form>
+        <style>
+        .btn-volver {
+            background: #6e0343;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-volver:hover {
+            background: #4a022e;
+        }
+        </style>
     </div>
 
     <script>
