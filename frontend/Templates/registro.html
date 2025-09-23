@@ -1,4 +1,3 @@
-<!-- templates/registro.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <script>
-    function sugerirUsuario() {
-        const correo = document.getElementById('email').value.trim();
-        let usuario = correo.split('@')[0];
-        document.getElementById('usuario').value = usuario;
-    }
-    </script>
+    <script defer src="/static/js/registro.js"></script>
 </head>
 <body>
-
     <div class="container">
         <h2>Registro de Nuevo Usuario</h2>
         <form id="registroForm">
@@ -25,21 +17,21 @@
             <br>
             <input type="text" id="ap_mat" name="materno" placeholder="Apellido Materno" required style="padding:8px; width:80%; margin-bottom:10px;">
             <br>
-            <input type="email" id="email" name="email" placeholder="Correo electrónico" required oninput="sugerirUsuario()" style="padding:8px; width:80%; margin-bottom:10px;">
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" required oninput="sugerirUsuario()" style="padding:8px; width:80%; margin-bottom:10px; background:#eee;">
             <br>
             <input type="text" id="usuario" name="usuario" placeholder="Usuario sugerido" required readonly style="padding:8px; width:80%; margin-bottom:10px; background:#eee;">
             <br>
             <input type="password" id="password" name="password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" required style="padding:8px; width:80%; margin-bottom:10px;">
             <br>
-            <select id="id_unidad_academica" name="id_unidad_academica" required style="padding:8px; width:80%; margin-bottom:24px;">
+            <select id="id_unidad_academica" name="id_unidad_academica" required style="padding:8px; width:80%; margin-bottom:10px;">
                 {% for ua in unidades_academicas %}
                 <option value="{{ ua.Id_Unidad_Academica }}">{{ ua.Sigla }}</option>
                 {% endfor %}
             </select>
             <br>
-            <select id="id_rol" name="id_rol" required style="padding:8px; width:80%; margin-bottom:24px;">
+            <select id="id_rol" name="id_rol" required style="padding:8px; width:80%; margin-bottom:10px;">
                 {% for rol in roles %}
-                <option value="{{ rol.Id_Rol }}">{{ rol.Nombre }}</option>
+                <option value="{{ rol.Id_Rol }}">{{ rol.Rol }}</option>
                 {% endfor %}
             </select>
             <br>
@@ -49,49 +41,5 @@
         <!-- Aquí mostraremos mensajes -->
         <div id="mensaje"></div>
     </div>
-
-    <script>
-    document.getElementById("registroForm").addEventListener("submit", async function(e) {
-        e.preventDefault(); // evita recargar la página
-
-        // 1. Tomamos los valores del form
-        const data = {
-            Nombre: document.getElementById("nombre").value,
-            Paterno: document.getElementById("ap_pat").value,
-            Materno: document.getElementById("ap_mat").value,
-            Usuario: document.getElementById("usuario").value,
-            Email: document.getElementById("email").value,
-            Password: document.getElementById("password").value,
-            Id_Unidad_Academica: parseInt(document.getElementById("id_unidad_academica").value),
-            Id_Rol: parseInt(document.getElementById("id_rol").value),
-            Id_Estatus: 1,
-        };
-
-        try {
-            // 2. Mandamos datos en JSON
-            const response = await fetch("/registro", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-
-            // 3. Procesamos la respuesta
-            const result = await response.json();
-
-            if (response.ok) {
-                document.getElementById("mensaje").innerHTML =
-                    `<p style="color: green;">✅ Usuario registrado con ID ${result.Id_Usuario}</p>`;
-            } else {
-                document.getElementById("mensaje").innerHTML =
-                    `<p style="color: red;">❌ Error: ${result.detail}</p>`;
-            }
-        } catch (err) {
-            document.getElementById("mensaje").innerHTML =
-                `<p style="color: red;">⚠️ Error de conexión: ${err.customMessage}</p>`;
-        }
-    });
-    </script>
 </body>
 </html>

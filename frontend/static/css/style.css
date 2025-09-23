@@ -1,76 +1,49 @@
-/* static/css/style.css */
-
 body {
     font-family: Arial, sans-serif;
-    background: #fff;
-    margin: 0;
-    padding: 0;
-}
-
-/* Colores institucionales IPN */
-:root {
-    --ipn-morado: #6e0343;
-    --ipn-oro: #ffffff;
-    --ipn-gris: #e5e5e5;
-    --ipn-blanco: #fff;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
-    max-width: 400px;
-    margin: 60px auto;
-    background: var(--ipn-blanco);
+    border: 2px solid #800040;
+    border-radius: 10px;
     padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(110,3,67,0.08);
     text-align: center;
-    border: 2px solid var(--ipn-morado);
+    width: 350px;
+    background-color: #fff;
 }
 
 h2 {
-    margin-bottom: 24px;
-    color: var(--ipn-morado);
+    margin-bottom: 20px;
+    color: #800040;
 }
 
-button, .sae-btn {
-    background: var(--ipn-morado);
-    color: var(--ipn-oro);
+form input,
+form select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;   /* más separación entre los campos */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    background-color: #800040;
+    color: white;
     border: none;
-    padding: 16px 48px;
     border-radius: 8px;
-    font-size: 2rem;
-    font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    margin: 0 auto;
-    display: block;
-    box-shadow: 0 2px 8px rgba(110,3,67,0.10);
-    letter-spacing: 2px;
-}
-button:hover, .sae-btn:hover {
-    background: var(--ipn-oro);
-    color: var(--ipn-morado);
+    margin-top: 12px;
 }
 
-.status {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 4px;
-    font-weight: bold;
-}
-.status.ok {
-    background: #e6f4ea;
-    color: #155724;
-}
-.status.fail {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-/* Portada */
-.portada-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--ipn-morado) 60%, var(--ipn-oro) 100%);
+button:hover {
+    background-color: #a00055;
 }

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class RolesBase(BaseModel):
-    Nombre:str
+    Rol:str
     Descripcion: str        
 
 class RolesCreate(RolesBase):
